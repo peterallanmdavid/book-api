@@ -15,5 +15,5 @@ cd backend && npm run dev
 Start frontend
 
 ```bash
-cd frontend && npm run dev
+cd frontend && npm run start
 ```
