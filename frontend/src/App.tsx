@@ -5,13 +5,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Authors from "./pages/Authors";
-import Books from "./pages/Books";
-import CreateAuthor from "./pages/CreateAuthor";
+
 import CreateBook from "./pages/CreateBook";
 import Home from "./pages/Home";
 import EditAuthor from "./pages/EditAuthor";
 import EditBook from "./pages/EditBook";
+import CreateAuthor from "./pages/CreateAuthor";
 
 function App() {
   return (
