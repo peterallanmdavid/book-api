@@ -3,7 +3,15 @@ import { FastifyInstance, RouteShorthandOptions } from "fastify";
 
 export default async function bookRoutes(fastify: FastifyInstance) {
   fastify.get("/book", async (request, reply) => {
-    const books = await fastify.prisma.book.findMany();
+    const books = await fastify.prisma.book.findMany({
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     return books;
   });
 
@@ -40,7 +48,6 @@ export default async function bookRoutes(fastify: FastifyInstance) {
     return newBook;
   });
 
-  // Get a books by ID
   fastify.get<{ Params: { id: string } }>(
     "/book/:id",
     async (request, reply) => {
@@ -57,7 +64,6 @@ export default async function bookRoutes(fastify: FastifyInstance) {
     }
   );
 
-  // Update a books
   fastify.put<{ Params: { id: string }; Body: Partial<Book> }>(
     "/book/:id",
     async (request, reply) => {
@@ -85,7 +91,6 @@ export default async function bookRoutes(fastify: FastifyInstance) {
     }
   );
 
-  // Delete a books
   fastify.delete<{ Params: { id: string } }>(
     "/book/:id",
     async (request, reply) => {

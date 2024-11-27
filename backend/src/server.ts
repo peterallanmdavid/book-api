@@ -8,6 +8,10 @@ dotenv.config();
 const startServer = async () => {
   const server = Fastify({ logger: true });
 
+  server.register(require("@fastify/cors"), {
+    origin: "http://localhost:3000", // Allow requests only from this origin
+  });
+  server;
   server.register(prismaPlugin);
   server.register(bookingRoutes);
   server.register(authorRoutes);

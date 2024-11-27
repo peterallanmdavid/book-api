@@ -3,7 +3,15 @@ import { FastifyInstance } from "fastify";
 
 export default async function authorRoutes(fastify: FastifyInstance) {
   fastify.get("/author", async (_request, _reply) => {
-    const books = await fastify.prisma.author.findMany();
+    const books = await fastify.prisma.author.findMany({
+      include: {
+        books: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
 
     return books;
   });
@@ -71,7 +79,6 @@ export default async function authorRoutes(fastify: FastifyInstance) {
     }
   );
 
-  // Delete an author
   fastify.delete<{ Params: { id: string } }>(
     "/author/:id",
     async (request, reply) => {
