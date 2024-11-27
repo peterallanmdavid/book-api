@@ -3,8 +3,7 @@
 Installation
 
 ```bash
-cd backend && npm install
-cd frontend && npm install
+cd backend && npm run setup && cd ../frontend && npm install
 ```
 
 Start backend
