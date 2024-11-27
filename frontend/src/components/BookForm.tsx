@@ -3,16 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { Author } from "./AuthorForm";
 
 export interface Book {
-  id: string | undefined; // Optional for creation
+  id: string | undefined;
   title: string;
   authorId: string;
   author?: Author;
 }
 
 interface BookFormProps {
-  initialData?: Book; // Optional for editing
-  onSubmit?: (data: Book) => void; // Callback for submitting form
-  onCancel?: () => void; // Optional back button handler
+  initialData?: Book;
+  onSubmit?: (data: Book) => void;
+  onCancel?: () => void;
 }
 
 const BookForm: React.FC<BookFormProps> = ({
@@ -25,7 +25,6 @@ const BookForm: React.FC<BookFormProps> = ({
   const [authors, setAuthors] = useState<Author[]>([]);
   const navigate = useNavigate();
 
-  // Fetch authors for the dropdown
   useEffect(() => {
     const fetchAuthors = async () => {
       const response = await fetch(

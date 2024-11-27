@@ -2,15 +2,15 @@ import React, { ReactNode } from "react";
 
 interface Column<T> {
   header: string;
-  accessor: keyof T | null; // Use null for action columns like Edit/Delete
+  accessor: keyof T | null;
 }
 
 interface TableProps<T> {
-  columns: Column<T>[]; // Array of columns
-  data: T[]; // Array of data objects
+  columns: Column<T>[];
+  data: T[];
 
-  onEdit?: (row: T) => void; // Handler for edit button
-  onDelete?: (row: T) => void; // Handler for delete button
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 }
 
 const Table = <T extends object>({

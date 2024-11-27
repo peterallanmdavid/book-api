@@ -68,7 +68,7 @@ const Books: React.FC = () => {
     { header: "ID", accessor: "id" as keyof Book },
     { header: "Title", accessor: "title" as keyof Book },
     { header: "Author", accessor: "authorId" as keyof Book },
-    { header: "Actions", accessor: null }, // Column for buttons
+    { header: "Actions", accessor: null },
   ];
 
   return (

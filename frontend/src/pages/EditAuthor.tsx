@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Popup } from "../components/Popup";
@@ -37,11 +37,10 @@ const updateAuthor = async (author: Author): Promise<void> => {
 
 const EditAuthor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+
   const queryClient = useQueryClient();
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  // Fetch the author data by ID
   const {
     data: author,
     isLoading,
@@ -53,20 +52,19 @@ const EditAuthor: React.FC = () => {
     enabled: !!id,
   });
 
-  // Mutation for updating the author
   const mutation = useMutation({
     mutationFn: updateAuthor,
     onError: (error, variables, context) => {
       console.error("Error updating author:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authors"] }); // Refresh authors list
-      setShowSuccessPopup(true); // Show success popup
+      queryClient.invalidateQueries({ queryKey: ["authors"] });
+      setShowSuccessPopup(true);
     },
   });
 
   const handleUpdate = (updatedAuthor: Author) => {
-    mutation.mutate(updatedAuthor); // Trigger the mutation to update the author
+    mutation.mutate(updatedAuthor);
   };
 
   if (isLoading) return <div>Loading...</div>;

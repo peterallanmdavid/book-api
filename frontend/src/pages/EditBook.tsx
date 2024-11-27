@@ -40,7 +40,6 @@ const EditBook: React.FC = () => {
   const queryClient = useQueryClient();
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  // Fetch book data by ID
   const {
     data: book,
     isLoading,
@@ -52,7 +51,6 @@ const EditBook: React.FC = () => {
     enabled: !!id,
   });
 
-  // Mutation for updating the book
   const mutation = useMutation({
     mutationFn: (book: Book) => {
       if (!book.id) {
@@ -64,17 +62,17 @@ const EditBook: React.FC = () => {
       console.error("Error updating book:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["books"] }); // Refresh books list
-      setShowSuccessPopup(true); // Show success popup
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+      setShowSuccessPopup(true);
     },
   });
 
   const handleUpdate = (updatedBook: Book) => {
-    mutation.mutate(updatedBook); // Trigger the mutation to update the book
+    mutation.mutate(updatedBook);
   };
 
   const handleCancel = () => {
-    navigate("/books"); // Navigate back to books list
+    navigate("/books");
   };
 
   if (isLoading) return <div>Loading...</div>;

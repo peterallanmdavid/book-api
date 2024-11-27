@@ -48,7 +48,7 @@ const Authors: React.FC = () => {
   });
 
   const handleEdit = (author: Author) => {
-    navigate(`/authors/edit/${author.id}`); // Navigate to edit author page
+    navigate(`/authors/edit/${author.id}`);
   };
 
   const handleDelete = (author: Author) => {
@@ -57,20 +57,20 @@ const Authors: React.FC = () => {
 
       return;
     }
-    setSelectedAuthor(author); // Open confirmation popup
+    setSelectedAuthor(author);
   };
 
   const confirmDelete = () => {
     if (selectedAuthor) {
-      mutation.mutate(selectedAuthor?.id!); // Perform delete
-      setSelectedAuthor(null); // Close popup
+      mutation.mutate(selectedAuthor?.id!);
+      setSelectedAuthor(null);
     }
   };
 
   const columns = [
     { header: "ID", accessor: "id" as keyof Author },
     { header: "Name", accessor: "name" as keyof Author },
-    { header: "Actions", accessor: null }, // Action buttons for edit/delete
+    { header: "Actions", accessor: null },
   ];
 
   if (isLoading) return <div>Loading...</div>;

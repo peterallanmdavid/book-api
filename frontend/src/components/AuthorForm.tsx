@@ -3,30 +3,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { Book } from "./BookForm";
 
 export interface Author {
-  id: string | undefined; // Allow undefined for new authors
+  id: string | undefined;
   name: string;
   books?: Book[];
 }
 
 interface AuthorFormProps {
-  initialData?: Author; // Optional props for editing
-  onSubmit?: (data: Author) => void; // Callback for submitting form
+  initialData?: Author;
+  onSubmit?: (data: Author) => void;
 }
 
 const AuthorForm: React.FC<AuthorFormProps> = ({ initialData, onSubmit }) => {
-  const [name, setName] = useState(initialData?.name || ""); // Pre-fill the name if available
+  const [name, setName] = useState(initialData?.name || "");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const authorData = { id: initialData?.id, name }; // Include ID if editing
+    const authorData = { id: initialData?.id, name };
 
     if (onSubmit) {
-      // Pass the form data to the parent component
       onSubmit(authorData);
     } else {
-      // Default POST for create
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/author`,
         {
