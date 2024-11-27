@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Table from "../components/Table";
 import { Link, useNavigate } from "react-router-dom";
-import { Book } from "./CreateBook";
+import { Book } from "../components/BookForm";
 
 const fetchBooks = async (): Promise<Book[]> => {
   const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/book`);

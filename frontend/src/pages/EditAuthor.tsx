@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import CreateAuthor, { Author } from "./CreateAuthor";
+
+import { Popup } from "../components/Popup";
+import AuthorForm, { Author } from "../components/AuthorForm";
 
 const fetchAuthorById = async ({
   queryKey,
@@ -60,9 +62,6 @@ const EditAuthor: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authors"] }); // Refresh authors list
       setShowSuccessPopup(true); // Show success popup
-      setTimeout(() => {
-        setShowSuccessPopup(false);
-      }, 2000); // Delay for popup visibility
     },
   });
 
@@ -75,16 +74,20 @@ const EditAuthor: React.FC = () => {
 
   return (
     <div className="p-8">
-      <CreateAuthor initialData={author} onSubmit={handleUpdate} />
+      <AuthorForm initialData={author} onSubmit={handleUpdate} />
 
-      {/* Success Popup */}
       {showSuccessPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Success</h2>
-            <p>The author has been successfully updated!</p>
-          </div>
-        </div>
+        <Popup>
+          <h2 className="text-xl font-bold mb-4">Success</h2>
+          <p>The author has been successfully updated!</p>
+
+          <button
+            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mt-4"
+            onClick={() => setShowSuccessPopup(false)}
+          >
+            Ok
+          </button>
+        </Popup>
       )}
     </div>
   );
