@@ -10,9 +10,12 @@ export default async function bookRoutes(fastify: FastifyInstance) {
     const take =
       limit && parseInt(limit, 10) ? { take: parseInt(limit, 10) } : undefined;
     const totalCount = await fastify.prisma.book.count();
-    console.log("take", take);
+
     const books = await fastify.prisma.book.findMany({
       ...take,
+      orderBy: {
+        updatedAt: "desc",
+      },
       include: {
         author: {
           select: {

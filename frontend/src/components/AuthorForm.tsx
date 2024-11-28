@@ -76,7 +76,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ initialData, onSubmit }) => {
       </div>
       <div className="flex gap-4">
         <Link
-          to="/"
+          to="/authors"
           className="p-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
         >
           Back

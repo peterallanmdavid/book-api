@@ -133,7 +133,7 @@ const BookForm: React.FC<BookFormProps> = ({
       </div>
       <div className="flex gap-4">
         <Link
-          to="/"
+          to="/books"
           className="p-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
         >
           Back

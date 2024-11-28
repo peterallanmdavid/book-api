@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Popup } from "../components/Popup";
 import AuthorForm, { Author } from "../components/AuthorForm";
 import { usePopup } from "../utils/PopupProvider";
 
