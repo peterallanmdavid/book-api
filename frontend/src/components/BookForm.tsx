@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Author } from "./AuthorForm";
+import { usePopup } from "../utils/PopupProvider";
 
 export interface Book {
   id: string | undefined;
@@ -24,6 +25,7 @@ const BookForm: React.FC<BookFormProps> = ({
   const [authorId, setAuthorId] = useState(initialData?.authorId || "");
   const [authors, setAuthors] = useState<Author[]>([]);
   const navigate = useNavigate();
+  const { openPopup, closePopup } = usePopup();
 
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -37,28 +39,62 @@ const BookForm: React.FC<BookFormProps> = ({
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const bookData: Book = {
-      id: initialData?.id || undefined,
-      title,
-      authorId,
-    };
+      const bookData: Book = {
+        id: initialData?.id || undefined,
+        title,
+        authorId,
+      };
 
-    if (onSubmit) {
-      onSubmit(bookData);
-    } else {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/book`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(bookData),
+      if (onSubmit) {
+        onSubmit(bookData);
+      } else {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/book`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookData),
+          }
+        );
+
+        if (response.ok) {
+          navigate("/");
+        } else {
+          const errorMessage =
+            response.status === 409
+              ? "Book already exist"
+              : "An error occurred while creating the book.";
+          openPopup({
+            title: "Error",
+            content: (
+              <>
+                <p>{errorMessage}</p>
+                <button
+                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                  onClick={closePopup}
+                >
+                  Ok
+                </button>
+              </>
+            ),
+          });
         }
-      );
-      if (response.ok) {
-        navigate("/");
       }
+    } catch (error) {
+      console.error("Error creating book:", error);
+      openPopup({
+        title: "Error",
+        content: (
+          <>
+            <p>An error occurred while creating the book.</p>
+            <p>{(error as Error).message}</p>
+          </>
+        ),
+      });
+      closePopup();
     }
   };
 

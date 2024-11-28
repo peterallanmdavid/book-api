@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Popup } from "../components/Popup";
 import AuthorForm, { Author } from "../components/AuthorForm";
+import { usePopup } from "../utils/PopupProvider";
 
 const fetchAuthorById = async ({
   queryKey,
@@ -39,7 +40,7 @@ const EditAuthor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const queryClient = useQueryClient();
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const { openPopup, closePopup } = usePopup();
 
   const {
     data: author,
@@ -59,7 +60,21 @@ const EditAuthor: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authors"] });
-      setShowSuccessPopup(true);
+      openPopup({
+        title: "Success",
+        content: (
+          <>
+            <p>The author has been successfully updated!</p>
+
+            <button
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mt-4"
+              onClick={() => closePopup()}
+            >
+              Ok
+            </button>
+          </>
+        ),
+      });
     },
   });
 
@@ -73,20 +88,6 @@ const EditAuthor: React.FC = () => {
   return (
     <div className="p-8">
       <AuthorForm initialData={author} onSubmit={handleUpdate} />
-
-      {showSuccessPopup && (
-        <Popup>
-          <h2 className="text-xl font-bold mb-4">Success</h2>
-          <p>The author has been successfully updated!</p>
-
-          <button
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mt-4"
-            onClick={() => setShowSuccessPopup(false)}
-          >
-            Ok
-          </button>
-        </Popup>
-      )}
     </div>
   );
 };

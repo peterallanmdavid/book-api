@@ -1,12 +1,13 @@
 import React from "react";
-import AuthorForm from "../components/AuthorForm";
+
+import BookForm from "../components/BookForm";
 
 interface CreateBookProps {}
 
 export const CreateBook: React.FC<CreateBookProps> = () => {
   return (
     <div className="p-8">
-      <AuthorForm />
+      <BookForm />
     </div>
   );
 };

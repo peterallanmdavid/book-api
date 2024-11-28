@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Book } from "./BookForm";
+import { usePopup } from "../utils/PopupProvider";
 
 export interface Author {
   id: string | undefined;
@@ -16,7 +17,7 @@ interface AuthorFormProps {
 const AuthorForm: React.FC<AuthorFormProps> = ({ initialData, onSubmit }) => {
   const [name, setName] = useState(initialData?.name || "");
   const navigate = useNavigate();
-
+  const { openPopup, closePopup } = usePopup();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -35,6 +36,25 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ initialData, onSubmit }) => {
       );
       if (response.ok) {
         navigate("/");
+      } else {
+        const errorMessage =
+          response.status === 409
+            ? "Author already exist"
+            : "An error occurred while creating the author.";
+        openPopup({
+          title: "Error",
+          content: (
+            <>
+              <p>{errorMessage}</p>
+              <button
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                onClick={closePopup}
+              >
+                Ok
+              </button>
+            </>
+          ),
+        });
       }
     }
   };

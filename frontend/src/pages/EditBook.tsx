@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Popup } from "../components/Popup";
 import BookForm, { Book } from "../components/BookForm";
+import { usePopup } from "../utils/PopupProvider";
 
 const fetchBookById = async ({
   queryKey,
@@ -38,7 +39,7 @@ const EditBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const { openPopup, closePopup } = usePopup();
 
   const {
     data: book,
@@ -63,7 +64,21 @@ const EditBook: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["books"] });
-      setShowSuccessPopup(true);
+      openPopup({
+        title: "Success",
+        content: (
+          <>
+            <p>The book has been successfully updated!</p>
+
+            <button
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mt-4"
+              onClick={() => closePopup()}
+            >
+              Ok
+            </button>
+          </>
+        ),
+      });
     },
   });
 
@@ -85,19 +100,6 @@ const EditBook: React.FC = () => {
         onSubmit={handleUpdate}
         onCancel={handleCancel}
       />
-
-      {showSuccessPopup && (
-        <Popup>
-          <h2 className="text-xl font-bold mb-4">Success</h2>
-          <p>The book has been successfully updated!</p>
-          <button
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mt-4"
-            onClick={() => setShowSuccessPopup(false)}
-          >
-            Ok
-          </button>
-        </Popup>
-      )}
     </div>
   );
 };

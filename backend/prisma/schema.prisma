@@ -12,7 +12,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+// make author delete cascase delete books
 model Author {
   id        String  @id @default(uuid())
   name      String
@@ -24,7 +24,7 @@ model Author {
 model Book {
   id        String  @id @default(uuid())
   title     String
-  author    Author  @relation(fields: [authorId], references: [id])
+  author    Author  @relation(fields: [authorId], references: [id],onDelete: Cascade)
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

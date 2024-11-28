@@ -30,12 +30,11 @@ export default async function bookRoutes(fastify: FastifyInstance) {
     const book = await fastify.prisma.book.findFirst({
       where: {
         title,
-        authorId,
       },
     });
 
     if (book) {
-      reply.code(409).send({ message: "Book already exist" });
+      return reply.code(409).send({ message: "Book already exist" });
     }
 
     const newBook = await fastify.prisma.book.create({
