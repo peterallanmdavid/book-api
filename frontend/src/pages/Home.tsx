@@ -3,10 +3,10 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import AuthorItem from "../components/AuthorItem";
 import { Author } from "../components/AuthorForm";
-import { Link } from "react-router-dom";
+
 import { Book } from "../components/BookForm";
 import BookItem from "../components/BookItem";
-import Carousel from "../components/Carousel";
+import PreviewList from "../components/PreviewList";
 
 const fetchBooks = async ({
   queryKey,
@@ -21,7 +21,7 @@ const fetchBooks = async ({
   return response.json();
 };
 
-const CAROUSEL_CONTENT = 5;
+const PREVIEW_COUNT = 4;
 
 const fetchAuthors = async ({
   queryKey,
@@ -38,12 +38,12 @@ const fetchAuthors = async ({
 
 const Home: React.FC = () => {
   const { data: books, isLoading: loadingBooks } = useQuery({
-    queryKey: ["books", CAROUSEL_CONTENT],
+    queryKey: ["books", PREVIEW_COUNT],
     queryFn: fetchBooks,
   });
 
   const { data: authors, isLoading: loadingAuthors } = useQuery({
-    queryKey: ["authors", CAROUSEL_CONTENT],
+    queryKey: ["authors", PREVIEW_COUNT],
     queryFn: fetchAuthors,
   });
 
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Books Library</h1>
       <div className="space-y-4">
-        <Carousel
+        <PreviewList
           title="Authors"
           items={authors?.data || []}
           renderItem={(author: Author) => <AuthorItem author={author} />}
@@ -60,9 +60,10 @@ const Home: React.FC = () => {
           viewAllLabel="View All"
           isLoading={loadingAuthors}
           noItemsMessage="No Authors Yet"
+          totalCount={authors?.totalCount || 0}
         />
 
-        <Carousel
+        <PreviewList
           title="Books"
           items={books?.data || []}
           renderItem={(book: Book) => <BookItem book={book} />}
@@ -71,6 +72,7 @@ const Home: React.FC = () => {
           viewAllLabel="View All"
           isLoading={loadingBooks}
           noItemsMessage="No Books Yet"
+          totalCount={books?.totalCount || 0}
         />
       </div>
     </div>

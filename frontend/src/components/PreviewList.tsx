@@ -9,9 +9,10 @@ interface CarouselProps<T> {
   viewAllLabel?: string;
   noItemsMessage?: string;
   isLoading?: boolean; // Added loading state
+  totalCount?: number;
 }
 
-const Carousel = <T,>({
+const PreviewList = <T,>({
   title,
   items,
   renderItem,
@@ -20,6 +21,7 @@ const Carousel = <T,>({
   viewAllLabel = "View All",
   noItemsMessage = "No items yet",
   isLoading = false,
+  totalCount = 0,
 }: CarouselProps<T>) => {
   return (
     <div className="flex flex-col justify-between mb-8 gap-4">
@@ -29,7 +31,7 @@ const Carousel = <T,>({
         {items.length
           ? viewAllLink && (
               <a href={viewAllLink} className="text-blue-500 hover:underline">
-                {`${viewAllLabel} (${items.length})`}
+                {`${viewAllLabel} (${totalCount})`}
               </a>
             )
           : addLink &&
@@ -44,7 +46,7 @@ const Carousel = <T,>({
       </div>
 
       {/* Carousel Items */}
-      <div className="flex overflow-x-auto gap-4 scrollbar-hide">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
           <div className="text-center text-gray-500 text-lg animate-pulse">
             Loading...
@@ -65,4 +67,4 @@ const Carousel = <T,>({
   );
 };
 
-export default Carousel;
+export default PreviewList;
