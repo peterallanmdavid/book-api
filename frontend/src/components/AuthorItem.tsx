@@ -1,5 +1,6 @@
 import React from "react";
 import { Author } from "./AuthorForm";
+import { Card } from "./Card";
 
 interface AuthorItemProps {
   author: Author;
@@ -13,7 +14,7 @@ const AuthorItem: React.FC<AuthorItemProps> = ({
   onDelete,
 }) => {
   return (
-    <div className="border rounded shadow p-4 mb-4 bg-white cursor-pointer hover:shadow-md">
+    <Card>
       <h2 className="text-lg font-bold mb-2">{author.name}</h2>
       <p className="text-sm text-gray-500">ID: {author.id}</p>
       <div className="flex justify-end gap-2 mt-4">
@@ -36,7 +37,7 @@ const AuthorItem: React.FC<AuthorItemProps> = ({
           Delete
         </button>
       </div>
-    </div>
+    </Card>
   );
 };
 
