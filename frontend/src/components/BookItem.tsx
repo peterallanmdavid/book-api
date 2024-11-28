@@ -75,7 +75,9 @@ const BookItem: React.FC<BookItemProps> = ({ book }) => {
   return (
     <Card>
       <h2 className="text-lg font-bold mb-2">{book.title}</h2>
-      <p className="text-sm text-gray-500">Author : {book.author?.name}</p>
+      <p className="text-sm text-gray-500 w-full">
+        Author : {book.author?.name}
+      </p>
       <div className="flex justify-end gap-2 mt-4">
         <button
           onClick={(e) => {
