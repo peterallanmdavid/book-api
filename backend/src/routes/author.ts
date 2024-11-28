@@ -2,8 +2,18 @@ import { Author } from "@prisma/client";
 import { FastifyInstance } from "fastify";
 
 export default async function authorRoutes(fastify: FastifyInstance) {
-  fastify.get("/author", async (_request, _reply) => {
-    const books = await fastify.prisma.author.findMany({
+  fastify.get("/authors", async (request, reply) => {
+    const { limit } = request.query as {
+      limit?: string;
+    };
+
+    const take =
+      limit && parseInt(limit, 10) ? { take: parseInt(limit, 10) } : undefined;
+
+    console.log("take", limit, take);
+    const totalCount = await fastify.prisma.author.count();
+    const author = await fastify.prisma.author.findMany({
+      ...take,
       include: {
         books: {
           select: {
@@ -13,10 +23,10 @@ export default async function authorRoutes(fastify: FastifyInstance) {
       },
     });
 
-    return books;
+    return { data: author, totalCount };
   });
 
-  fastify.post<{ Body: Author }>("/author", async (request, reply) => {
+  fastify.post<{ Body: Author }>("/authors", async (request, reply) => {
     const name = request.body.name;
     const author = await fastify.prisma.author.findFirst({
       where: {
@@ -38,7 +48,7 @@ export default async function authorRoutes(fastify: FastifyInstance) {
   });
 
   fastify.get<{ Params: { id: string } }>(
-    "/author/:id",
+    "/authors/:id",
     async (request, reply) => {
       const author = await fastify.prisma.author.findUnique({
         where: {
@@ -54,7 +64,7 @@ export default async function authorRoutes(fastify: FastifyInstance) {
   );
 
   fastify.put<{ Params: { id: string }; Body: Partial<Author> }>(
-    "/author/:id",
+    "/authors/:id",
     async (request, reply) => {
       const { id } = request.params;
       const { name } = request.body;
@@ -80,7 +90,7 @@ export default async function authorRoutes(fastify: FastifyInstance) {
   );
 
   fastify.delete<{ Params: { id: string } }>(
-    "/author/:id",
+    "/authors/:id",
     async (request, reply) => {
       const { id } = request.params;
       const author = await fastify.prisma.author.findUnique({

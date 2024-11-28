@@ -30,10 +30,10 @@ const BookForm: React.FC<BookFormProps> = ({
   useEffect(() => {
     const fetchAuthors = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/author`
+        `${process.env.REACT_APP_BACKEND_URL}/authors`
       );
       const data = await response.json();
-      setAuthors(data);
+      setAuthors(data?.data);
     };
     fetchAuthors();
   }, []);
@@ -52,7 +52,7 @@ const BookForm: React.FC<BookFormProps> = ({
         onSubmit(bookData);
       } else {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/book`,
+          `${process.env.REACT_APP_BACKEND_URL}/books`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -61,7 +61,7 @@ const BookForm: React.FC<BookFormProps> = ({
         );
 
         if (response.ok) {
-          navigate("/");
+          navigate("/books");
         } else {
           const errorMessage =
             response.status === 409

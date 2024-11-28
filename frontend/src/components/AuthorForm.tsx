@@ -27,7 +27,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ initialData, onSubmit }) => {
       onSubmit(authorData);
     } else {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/author`,
+        `${process.env.REACT_APP_BACKEND_URL}/authors`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -35,7 +35,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ initialData, onSubmit }) => {
         }
       );
       if (response.ok) {
-        navigate("/");
+        navigate("/authors");
       } else {
         const errorMessage =
           response.status === 409

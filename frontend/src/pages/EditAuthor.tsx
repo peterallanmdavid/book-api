@@ -14,7 +14,7 @@ const fetchAuthorById = async ({
   const [, id] = queryKey;
   if (!id) throw new Error("Author ID is required");
   const response = await fetch(
-    `${process.env.REACT_APP_BACKEND_URL}/author/${id}`
+    `${process.env.REACT_APP_BACKEND_URL}/authors/${id}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch author");
@@ -24,7 +24,7 @@ const fetchAuthorById = async ({
 
 const updateAuthor = async (author: Author): Promise<void> => {
   const response = await fetch(
-    `${process.env.REACT_APP_BACKEND_URL}/author/${author.id}`,
+    `${process.env.REACT_APP_BACKEND_URL}/authors/${author.id}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

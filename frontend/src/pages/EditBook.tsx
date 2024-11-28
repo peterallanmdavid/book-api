@@ -13,7 +13,7 @@ const fetchBookById = async ({
 }): Promise<Book> => {
   const [, id] = queryKey;
   const response = await fetch(
-    `${process.env.REACT_APP_BACKEND_URL}/book/${id}`
+    `${process.env.REACT_APP_BACKEND_URL}/books/${id}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch book");
@@ -23,7 +23,7 @@ const fetchBookById = async ({
 
 const updateBook = async (book: Book): Promise<void> => {
   const response = await fetch(
-    `${process.env.REACT_APP_BACKEND_URL}/book/${book.id}`,
+    `${process.env.REACT_APP_BACKEND_URL}/books/${book.id}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

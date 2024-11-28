@@ -2,8 +2,17 @@ import { Book } from "@prisma/client";
 import { FastifyInstance, RouteShorthandOptions } from "fastify";
 
 export default async function bookRoutes(fastify: FastifyInstance) {
-  fastify.get("/book", async (request, reply) => {
+  fastify.get("/books", async (request, reply) => {
+    const { limit } = request.query as {
+      limit?: string;
+    };
+
+    const take =
+      limit && parseInt(limit, 10) ? { take: parseInt(limit, 10) } : undefined;
+    const totalCount = await fastify.prisma.book.count();
+    console.log("take", take);
     const books = await fastify.prisma.book.findMany({
+      ...take,
       include: {
         author: {
           select: {
@@ -12,10 +21,14 @@ export default async function bookRoutes(fastify: FastifyInstance) {
         },
       },
     });
-    return books;
+
+    return {
+      data: books,
+      totalCount,
+    };
   });
 
-  fastify.post<{ Body: Book }>("/book", async (request, reply) => {
+  fastify.post<{ Body: Book }>("/books", async (request, reply) => {
     const { title, authorId } = request.body;
 
     const author = await fastify.prisma.author.findUnique({
@@ -48,7 +61,7 @@ export default async function bookRoutes(fastify: FastifyInstance) {
   });
 
   fastify.get<{ Params: { id: string } }>(
-    "/book/:id",
+    "/books/:id",
     async (request, reply) => {
       const book = await fastify.prisma.book.findUnique({
         where: {
@@ -64,7 +77,7 @@ export default async function bookRoutes(fastify: FastifyInstance) {
   );
 
   fastify.put<{ Params: { id: string }; Body: Partial<Book> }>(
-    "/book/:id",
+    "/books/:id",
     async (request, reply) => {
       const { id } = request.params;
       const { title, authorId } = request.body;
@@ -91,7 +104,7 @@ export default async function bookRoutes(fastify: FastifyInstance) {
   );
 
   fastify.delete<{ Params: { id: string } }>(
-    "/book/:id",
+    "/books/:id",
     async (request, reply) => {
       const { id } = request.params;
       const book = await fastify.prisma.book.findUnique({
